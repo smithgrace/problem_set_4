@@ -1,0 +1,60 @@
++*In[2]:*+
+[source, ipython3]
+----
+!git clone https://github.com/smithgrace/problem_set_4.git
+----
+
+
++*Out[2]:*+
+----
+Cloning into 'problem_set_4'...
+remote: Enumerating objects: 3, done.[K
+remote: Counting objects: 100% (3/3), done.[K
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)[K
+Receiving objects: 100% (3/3), done.
+----
+
+
++*In[3]:*+
+[source, ipython3]
+----
+import requests
+import json
+
+# URL of ColourLovers API for fetching color palettes
+url = "http://www.colourlovers.com/api/palettes/top"
+
+# Parameters for the API request
+params = {
+    'format': 'json',
+    'numResults': 10  # Number of color palettes to fetch
+}
+
+# Fetch color palettes from ColourLovers
+response = requests.get(url, params=params)
+
+# Check if the request was successful
+if response.status_code == 200:
+    palettes = response.json()
+    
+    # Save the palettes to a JSON file
+    with open("color_palettes.json", "w") as file:
+        json.dump(palettes, file, indent=4)
+    
+    # Display each palette's colors in a formatted way
+    for i, palette in enumerate(palettes):
+        print(f"Palette {i + 1}: {palette['title']}")
+        print("Colors:")
+        for color in palette['colors']:
+            print(f"  #{color}")
+        print("\n")
+else:
+    print("Failed to fetch color palettes from ColourLovers API.")
+
+----
+
+
++*Out[3]:*+
+----
+Failed to fetch color palettes from ColourLovers API.
+----
